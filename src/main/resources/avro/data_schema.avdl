@@ -1,0 +1,22 @@
+@namespace("edu.jhu.cs639.datatype")
+protocol ASProtocol {
+
+    record CompactRead {
+        union { null, string } mismatch = null;
+        union { null, string } deletion = null;
+        union { null, string } insertion = null;
+    }
+
+    record ASCompRecord {
+        union { null, int } start = null;
+        union { null, int } referenceLength = null;
+        union { null, CompactRead } read = null;
+        union { null, string } qual = null;
+        union {null, string } region = null;
+    }
+
+    record ASBigRecord{
+        union {null, string} read = null;
+        union {null, string} qual = null;
+    }
+}

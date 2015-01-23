@@ -1,0 +1,59 @@
+=======================================================================================
+Data details :
+Download reference genome hg19.fa (http://hgdownload.cse.ucsc.edu/goldenPath/hg19/bigZips/)
+
+Download FASTQ files from : Smaller file : ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data/HG00096/sequence_read/SRR062634.filt.fastq.gz
+                            Larger file : ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data/HG00096/sequence_read/SRR081241_2.filt.fastq.gz
+=======================================================================================
+
+Command to build index in Bowtie2 :
+    ./bowtie2-build  <assembly_name> <output_index_name>
+
+Command to align FASTQ file using Bowtie2 :
+    ./bowtie2 -p 4 -x <output_index_name> <input_fastq_file> -S <output_sam_file_name>
+
+=======================================================================================
+
+SAMTOOLS commands:
+Generate BAM file from SAM file :
+    samtools view -b -S -o <sam_file> <bam_file>
+Sort generated BAM file :
+    samtools sort <bam_file> <sorted_bam_file>
+Recover sorted SAM file from BAM :
+    samtools view -o <sorted_sam_file> <sorted_bam_file>
+
+Sorted SAM file titled <sorted_sam_file> will act as in input to our tool.
+
+=======================================================================================
+
+Running ASGC compressor :
+To compress resulting sorted SAM file execute :
+    java -Xmx7048m -Xms6556m -cp asgc-format-1.0-SNAPSHOT-jar-with-dependencies.jar edu.jhu.cs639.driver.LocalModeCompressor <reference_assembly_fasta_file> <sorted_sam_file> <output_file_prefix>
+
+This will generate two files : <output_file_prefix>_aligned and <output_file_prefix>_unaligned . File with prefix '_aligned' is compressed file for aligned reads
+and file with prefix '_unaligned' is for unaligned reads.
+
+To decompress data execute :
+    java -Xmx7048m -Xms6556m -cp asgc-format-1.0-SNAPSHOT-jar-with-dependencies.jar edu.jhu.cs639.driver.LocalModeDecompressor <reference_assembly_fasta_file>  <prefix_of_compressed_files> <output_file_path>
+
+=======================================================================================
+
+To validate our tool we have provided a validation API.
+Execute this command to validate compression and decompression :
+    java -Xmx7048m -Xms6556m -cp asgc-format-1.0-SNAPSHOT-jar-with-dependencies.jar edu.jhu.cs639.util.TestUtils <reference_assembly_fasta_file> <sorted_sam_file>
+
+This command reads each record from SAM files, compresses it and decompresses it. Decompressed record is then compared to original record. If a mismatch is found, program exists with exception.
+
+=======================================================================================
+
+Details about the code :
+
+LocalModeCompressor.java is the driver class to compress a file. Java docs are present in the class which will help navigate further in the code.
+LocalModeDecompressor.java is the driver class to decompress a file. Similarly java docs are present in the class.
+TestUtils.java is a utility class to validate compression and decompression.
+
+=======================================================================================
+
+To compile the source execute, unzip the source_code.zip and execute :
+    mvn clean install
+This will generate a executable jar in your target folder.

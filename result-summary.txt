@@ -1,0 +1,50 @@
+
+-rw-r--r--  1 ankit  staff   23997496 Feb  1 00:11 2scbwt-testewahT
+-rw-r--r--  1 ankit  staff   21635072 Feb  1 00:12 2scbwt-testewahG
+-rw-r--r--  1 ankit  staff   24074700 Feb  1 00:12 2scbwt-testewahA
+-rw-r--r--  1 ankit  staff      56103 Feb  1 00:12 2scbwt-testewahN
+-rw-r--r--  1 ankit  staff   21678938 Feb  1 00:12 2scbwt-testewahC
+
+Results with RLH encoding + encoding map. 
+
+*All data is SCALCE-rearranged unless specified otherwise.
+====================================================================================================
+
+-rw-r--r--  1 ankit  staff   23622372 Feb  1 00:15 2scbwt-testewahT
+-rw-r--r--  1 ankit  staff   21355580 Feb  1 00:18 2scbwt-testewahG
+-rw-r--r--  1 ankit  staff   23680244 Feb  1 00:20 2scbwt-testewahA
+-rw-r--r--  1 ankit  staff      18487 Feb  1 00:21 2scbwt-testewahN
+-rw-r--r--  1 ankit  staff   21409149 Feb  1 00:21 2scbwt-testewahC
+
+Results with RLH encoding + encoding map. Writing with Bzip2 stream
+
+====================================================================================================
+
+-rw-r--r--  1 ankit  staff   22708591 Feb  1 00:23 2scbwt-testewahT
+-rw-r--r--  1 ankit  staff   20597793 Feb  1 00:23 2scbwt-testewahG
+-rw-r--r--  1 ankit  staff   22770037 Feb  1 00:23 2scbwt-testewahA
+-rw-r--r--  1 ankit  staff      21858 Feb  1 00:24 2scbwt-testewahN
+-rw-r--r--  1 ankit  staff   20653983 Feb  1 00:24 2scbwt-testewahC
+
+Results with RLH encoding + encoding map. Writing with GZip stream
+
+====================================================================================================
+
+Results with RLH encoding + encoding map. 2mer 71.7424 MB
+
+====================================================================================================
+For some reason, numbers are bigger for scalce rearranged data 
+
+Results with RLH encoding + encoding map. 3mer 67.5442 MB (66.9824 MB when fixed the "NN" issue)
+WITH Gzip stream : 66.0273 MB
+
+NON-scalce rearranged data : 67.1823 (number are little better when fixed the "NN" issue 66.5559 MB)
+NON-scalce rearranged data, gzip compression : 66.3886
+====================================================================================================
+
+Results with RLH encoding + encoding map. 4mer 77.0663 MB
+
+====================================================================================================
+
+Bzip2 with SCALCE rearranged data : 53MB (1m0.402s)
+Bzip2 with non-rearranged data : 60.64mb (0m52.308s)

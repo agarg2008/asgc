@@ -1,5 +1,6 @@
 package edu.jhu.cs639.test;
 
+import com.googlecode.javaewah.EWAHCompressedBitmap;
 import com.googlecode.javaewah.IntIterator;
 import com.googlecode.javaewah32.EWAHCompressedBitmap32;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
@@ -10,21 +11,30 @@ import java.util.*;
 public class EWAHCompressTest {
 
     public static void main(String[] args) throws IOException {
-        Map<String, EWAHCompressedBitmap32> maps = new HashMap<String, EWAHCompressedBitmap32>();
+        Map<String, EWAHCompressedBitmap> maps = new HashMap<String, EWAHCompressedBitmap>();
         long t = System.currentTimeMillis();
 
-        BufferedReader br = new BufferedReader(new FileReader("/Users/User1/Developer/asgc/test-files/non-scalce_read"));
+        BufferedReader br = new BufferedReader(new FileReader("/Users/User1/Developer/asgc/test-files/scalce_read"));
         String line;
         int index = 0;
+        StringBuilder reads = new StringBuilder();
         while ((line = br.readLine()) != null) {
-            line += "NN";
+            reads.append(line);
+        }
+        {
+            line = reads.toString();
             int length = line.length();
+            int i2 = length % 3;
+            length += i2;
+            while (i2-- > 0) {
+                line = line + "N";
+            }
             final int i1 = 3;
             for (int i = 0; i + i1 <= length; i += i1) {
                 String key = line.substring(i, i + i1);
-                EWAHCompressedBitmap32 bitmap = maps.get(key);
+                EWAHCompressedBitmap bitmap = maps.get(key);
                 if (bitmap == null) {
-                    bitmap = new EWAHCompressedBitmap32();
+                    bitmap = new EWAHCompressedBitmap();
                     maps.put(key, bitmap);
 
                 }
@@ -32,13 +42,13 @@ public class EWAHCompressTest {
                 index += i1;
             }
         }
-        for (final Map.Entry<String, EWAHCompressedBitmap32> entry : maps.entrySet()) {
+        for (final Map.Entry<String, EWAHCompressedBitmap> entry : maps.entrySet()) {
             writeRLHFile(entry.getValue(), "test-files/5scbwt-testewah" + entry.getKey());
         }
         System.out.println("time taken : " + (System.currentTimeMillis() - t) / 1000);
     }
 
-    private static void writeRLHFile(EWAHCompressedBitmap32 bitmapA, String fileName) throws IOException {
+    private static void writeRLHFile(EWAHCompressedBitmap bitmapA, String fileName) throws IOException {
         final IntIterator intIterator = bitmapA.intIterator();
         int begin = -1;
         Map<Integer, Integer> freq = new HashMap<Integer, Integer>();

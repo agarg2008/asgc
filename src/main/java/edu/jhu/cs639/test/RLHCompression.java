@@ -19,7 +19,8 @@ public class RLHCompression {
         long t = System.currentTimeMillis();
 
         final String inputFile = "/Users/User1/Developer/asgc/test-files/non-scalce_read";
-        final String outputFilePrefix = "test-files/4scbwt-testewah";
+        final String outputFilePrefix = "/Users/User1/Developer/asgc/test-files/4scbwt-testewah";
+        final int kmerLength = 3;
 
         final BufferedReader br = new BufferedReader(new FileReader(inputFile));
         String line;
@@ -30,7 +31,6 @@ public class RLHCompression {
         }
         line = reads.toString();
         int length = line.length();
-        final int kmerLength = 1;
         int padding = length % kmerLength;
         length += padding;
         while (padding-- > 0) {

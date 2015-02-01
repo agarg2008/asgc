@@ -45,6 +45,16 @@
             <version>1.7.7</version>
             <classifier>hadoop2</classifier>
         </dependency>
+        <dependency>
+            <groupId>com.googlecode.javaewah</groupId>
+            <artifactId>JavaEWAH</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.roaringbitmap</groupId>
+            <artifactId>RoaringBitmap</artifactId>
+            <version>0.4.8</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

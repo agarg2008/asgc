@@ -56,7 +56,7 @@ public class HuffmanCode {
         return trees.poll();
     }
 
-    public static void printCodes(HuffmanTree tree, StringBuilder prefix, Map<Integer, String> codes) {
+    public static void getEncoding(final HuffmanTree tree, final StringBuilder prefix, final Map<Integer, String> codes) {
         assert tree != null;
         if (tree instanceof HuffmanLeaf) {
             HuffmanLeaf leaf = (HuffmanLeaf) tree;
@@ -66,12 +66,12 @@ public class HuffmanCode {
 
             // traverse left
             prefix.append('0');
-            printCodes(node.left, prefix, codes);
+            getEncoding(node.left, prefix, codes);
             prefix.deleteCharAt(prefix.length() - 1);
 
             // traverse right
             prefix.append('1');
-            printCodes(node.right, prefix, codes);
+            getEncoding(node.right, prefix, codes);
             prefix.deleteCharAt(prefix.length() - 1);
         }
     }

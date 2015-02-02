@@ -2,11 +2,9 @@ package edu.jhu.cs639.test;
 
 import com.googlecode.javaewah.EWAHCompressedBitmap;
 import com.googlecode.javaewah.IntIterator;
+import nayuki.huffmancoding.BitOutputStream;
 
-import java.io.BufferedReader;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +17,7 @@ public class RLHCompression {
         long t = System.currentTimeMillis();
 
         final String inputFile = "/Users/User1/Developer/asgc/test-files/non-scalce_read";
-        final String outputFilePrefix = "/Users/User1/Developer/asgc/test-files/4scbwt-testewah";
+        final String outputFilePrefix = "/Users/User1/Developer/asgc/test-files/full4scbwt-testewah";
         final int kmerLength = 3;
 
         final BufferedReader br = new BufferedReader(new FileReader(inputFile));
@@ -47,10 +45,53 @@ public class RLHCompression {
             bitmap.set(index);
             index += kmerLength;
         }
-        for (final Map.Entry<String, EWAHCompressedBitmap> entry : maps.entrySet()) {
-            writeRLHFile(entry.getValue(), outputFilePrefix + entry.getKey());
+        if (false) {
+            writeSingleRLHFile(maps, outputFilePrefix + "full-file");
+        } else {
+            for (final Map.Entry<String, EWAHCompressedBitmap> entry : maps.entrySet()) {
+                writeRLHFile(entry.getValue(), outputFilePrefix + entry.getKey());
+            }
         }
         System.out.println("time taken : " + (System.currentTimeMillis() - t) / 1000);
+    }
+
+    private static void writeSingleRLHFile(final Map<String, EWAHCompressedBitmap> allMaps, final String fileName) throws IOException {
+        final List<Integer> diffList = new ArrayList<Integer>();
+        final Map<Integer, Integer> freq = new HashMap<Integer, Integer>();
+
+        for (final Map.Entry<String, EWAHCompressedBitmap> entry : allMaps.entrySet()) {
+            final IntIterator intIterator = entry.getValue().intIterator();
+            int begin = -1;
+            while (intIterator.hasNext()) {
+                int next = intIterator.next();
+                int diff = next - begin - 1;
+                Integer currentFreq = freq.get(diff);
+                if (currentFreq == null) {
+                    currentFreq = 0;
+                }
+                freq.put(diff, ++currentFreq);
+                diffList.add(diff);
+                begin = next;
+            }
+        }
+
+        final HuffmanTree tree = HuffmanCode.buildTree(freq);
+        final Map<Integer, String> codes = new HashMap<Integer, String>();
+
+        HuffmanCode.getEncoding(tree, new StringBuilder(), codes);
+
+        final BitOutputStream out = new BitOutputStream(new BufferedOutputStream(new FileOutputStream(new File(fileName))));
+        for (int i : diffList) {
+            final String s = codes.get(i);
+            for (char c : s.toCharArray()) {
+                if (c == '1')
+                    out.write(1);
+                else
+                    out.write(0);
+            }
+        }
+        out.output.write(codes.toString().getBytes());
+        out.close();
     }
 
     private static void writeRLHFile(final EWAHCompressedBitmap bitmapA, final String fileName) throws IOException {
@@ -74,25 +115,18 @@ public class RLHCompression {
         Map<Integer, String> codes = new HashMap<Integer, String>();
 
         HuffmanCode.getEncoding(tree, new StringBuilder(), codes);
-        final StringBuilder sb = new StringBuilder();
+        BitOutputStream out = new BitOutputStream(new BufferedOutputStream(new FileOutputStream(new File(fileName))));
+
         for (int i : diffList) {
-            sb.append(codes.get(i));
-        }
-        final String encoded = sb.toString();
-        try {
-            final BitWriter bw = new BitWriter(encoded.length());
-            for (int i = 0; i < encoded.length(); i++) {
-                bw.writeBit(encoded.charAt(i) == '1');
+            final String s = codes.get(i);
+            for (char c : s.toCharArray()) {
+                if (c == '1')
+                    out.write(1);
+                else
+                    out.write(0);
             }
-
-            byte[] b = bw.toArray();
-
-            final FileOutputStream fos = new FileOutputStream(fileName);
-            fos.write(codes.toString().getBytes());
-            fos.write(b);
-            fos.close();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+        out.output.write(codes.toString().getBytes());
+        out.close();
     }
 }

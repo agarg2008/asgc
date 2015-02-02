@@ -1,4 +1,11 @@
 
+
+===================
+Things to think about : Reordering of the data 
+encoding of distance matrix : Think about arithmatic encoding / PPM etc.
+Read more about rank/select query
+===================
+1mer
 -rw-r--r--  1 ankit  staff   23997496 Feb  1 00:11 2scbwt-testewahT
 -rw-r--r--  1 ankit  staff   21635072 Feb  1 00:12 2scbwt-testewahG
 -rw-r--r--  1 ankit  staff   24074700 Feb  1 00:12 2scbwt-testewahA
@@ -11,7 +18,7 @@ Results with RLH encoding + encoding map.
 
 *All data is SCALCE-rearranged unless specified otherwise.
 ====================================================================================================
-
+1mer 
 -rw-r--r--  1 ankit  staff   23622372 Feb  1 00:15 2scbwt-testewahT
 -rw-r--r--  1 ankit  staff   21355580 Feb  1 00:18 2scbwt-testewahG
 -rw-r--r--  1 ankit  staff   23680244 Feb  1 00:20 2scbwt-testewahA
@@ -21,7 +28,7 @@ Results with RLH encoding + encoding map.
 Results with RLH encoding + encoding map. Writing with Bzip2 stream
 
 ====================================================================================================
-
+1mer 
 -rw-r--r--  1 ankit  staff   22708591 Feb  1 00:23 2scbwt-testewahT
 -rw-r--r--  1 ankit  staff   20597793 Feb  1 00:23 2scbwt-testewahG
 -rw-r--r--  1 ankit  staff   22770037 Feb  1 00:23 2scbwt-testewahA
@@ -31,19 +38,22 @@ Results with RLH encoding + encoding map. Writing with Bzip2 stream
 Results with RLH encoding + encoding map. Writing with GZip stream
 
 ====================================================================================================
-
-Results with RLH encoding + encoding map. 2mer 71.7424 MB (71.7624MB with non-rearranged data)
+2mer
+Results with RLH encoding + encoding map.  71.7424 MB (71.7624MB with non-rearranged data)
 
 ====================================================================================================
+3mer
+
 For some reason, numbers are bigger for scalce rearranged data (even bigger difference for 4mer data) (Thus it is possible that a certain combination is better)
 
 Results with RLH encoding + encoding map. 3mer 67.5442 MB (66.9824 MB when fixed the "NN" issue)
 WITH Gzip stream : 66.0273 MB
 
-NON-scalce rearranged data : 67.1823 (number are little better when fixed the "NN" issue 66.5559 MB) Time taken = 46 seconds
+NON-scalce rearranged data : 67.1823 (number are little better when fixed the "NN" issue 66.5559 MB and 66.466MB when making a common huffan tree and writing to single file) Time taken = 40 seconds
+
 NON-scalce rearranged data, gzip compression : 66.3886
 ====================================================================================================
-
+4mer
 Results with RLH encoding + encoding map. 4mer 77.0663 MB (73.785 MB with non-rearranged data)
 
 ====================================================================================================
